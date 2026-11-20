@@ -21,9 +21,9 @@
 
 ## 4. Interfaz web (UI-01 a UI-03)
 
-- [ ] 4.1 Crear `app/static/index.html` con selector de estado, tabla editable, botón Calcular, contenedores de gráficas, tabla de resultados y área de errores (UI-01, UI-02, UI-03)
-- [ ] 4.2 Crear `app/static/styles.css` con diseño claro, en español y responsive (UI-03-S2)
-- [ ] 4.3 Crear `app/static/app.js` con validación local, llamada a la API, gráficas Chart.js de barras agrupadas y líneas 0..10, referencia estacionaria, tabla a 4 decimales y mensajes de error (UI-01-S2, UI-02, UI-03-S1)
+- [x] 4.1 Crear `app/static/index.html` con selector de estado, tabla editable, botón Calcular, contenedores de gráficas, tabla de resultados y área de errores (UI-01, UI-02, UI-03)
+- [x] 4.2 Crear `app/static/styles.css` con diseño claro, en español y responsive (UI-03-S2)
+- [x] 4.3 Crear `app/static/app.js` con validación local, llamada a la API, gráficas Chart.js de barras agrupadas y líneas 0..10, referencia estacionaria, tabla a 4 decimales y mensajes de error (UI-01-S2, UI-02, UI-03-S1)
 
 ## 5. Pruebas automatizadas
 
