@@ -3,7 +3,7 @@
 ## 1. Entorno y estructura
 
 - [x] 1.1 Crear requirements.txt con FastAPI, Uvicorn, NumPy, pytest, httpx y pytest-cov; crear y activar el entorno virtual `venv` e instalar dependencias
-- [ ] 1.2 Crear la estructura `app/`, `app/static/` y `tests/` respetando el .gitignore
+- [x] 1.2 Crear la estructura `app/`, `app/static/` y `tests/` respetando el .gitignore
 
 ## 2. Motor de Markov (ME-01 a ME-05)
 
