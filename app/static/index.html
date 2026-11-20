@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadenas de Markov · Clima Bogotá</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <h1>Predicción del clima en Bogotá</h1>
+        <p>
+          Cadena de Markov discreta con cuatro estados: Soleado, Nublado,
+          Lluvioso y Tormenta. Calcula la distribución a 1, 3, 5 y 10 pasos.
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="config-title">
+        <h2 id="config-title">Configurar simulación</h2>
+        <form id="prediction-form" novalidate>
+          <div class="field">
+            <label for="initial-state">Estado inicial</label>
+            <select id="initial-state" name="initial_state">
+              <option value="Soleado">Soleado</option>
+              <option value="Nublado">Nublado</option>
+              <option value="Lluvioso">Lluvioso</option>
+              <option value="Tormenta">Tormenta</option>
+            </select>
+          </div>
+
+          <fieldset class="matrix-fieldset">
+            <legend>Matriz de transición (filas = estado actual, columnas = siguiente)</legend>
+            <div class="table-scroll">
+              <table id="matrix-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Desde / Hacia</th>
+                    <th scope="col">Soleado</th>
+                    <th scope="col">Nublado</th>
+                    <th scope="col">Lluvioso</th>
+                    <th scope="col">Tormenta</th>
+                  </tr>
+                </thead>
+                <tbody id="matrix-body">
+                  <tr>
+                    <th scope="row">Soleado</th>
+                    <td><input type="number" step="any" value="0.50" data-row="0" data-col="0" aria-label="Soleado a Soleado" /></td>
+                    <td><input type="number" step="any" value="0.30" data-row="0" data-col="1" aria-label="Soleado a Nublado" /></td>
+                    <td><input type="number" step="any" value="0.18" data-row="0" data-col="2" aria-label="Soleado a Lluvioso" /></td>
+                    <td><input type="number" step="any" value="0.02" data-row="0" data-col="3" aria-label="Soleado a Tormenta" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nublado</th>
+                    <td><input type="number" step="any" value="0.25" data-row="1" data-col="0" aria-label="Nublado a Soleado" /></td>
+                    <td><input type="number" step="any" value="0.35" data-row="1" data-col="1" aria-label="Nublado a Nublado" /></td>
+                    <td><input type="number" step="any" value="0.35" data-row="1" data-col="2" aria-label="Nublado a Lluvioso" /></td>
+                    <td><input type="number" step="any" value="0.05" data-row="1" data-col="3" aria-label="Nublado a Tormenta" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Lluvioso</th>
+                    <td><input type="number" step="any" value="0.15" data-row="2" data-col="0" aria-label="Lluvioso a Soleado" /></td>
+                    <td><input type="number" step="any" value="0.35" data-row="2" data-col="1" aria-label="Lluvioso a Nublado" /></td>
+                    <td><input type="number" step="any" value="0.40" data-row="2" data-col="2" aria-label="Lluvioso a Lluvioso" /></td>
+                    <td><input type="number" step="any" value="0.10" data-row="2" data-col="3" aria-label="Lluvioso a Tormenta" /></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Tormenta</th>
+                    <td><input type="number" step="any" value="0.10" data-row="3" data-col="0" aria-label="Tormenta a Soleado" /></td>
+                    <td><input type="number" step="any" value="0.30" data-row="3" data-col="1" aria-label="Tormenta a Nublado" /></td>
+                    <td><input type="number" step="any" value="0.45" data-row="3" data-col="2" aria-label="Tormenta a Lluvioso" /></td>
+                    <td><input type="number" step="any" value="0.15" data-row="3" data-col="3" aria-label="Tormenta a Tormenta" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hint">Cada fila debe sumar 1 con tolerancia 1e-9. Puedes editar los valores y recalcular.</p>
+          </fieldset>
+
+          <label class="checkbox">
+            <input type="checkbox" id="include-stationary" />
+            Mostrar distribución estacionaria como referencia
+          </label>
+
+          <button id="calculate-btn" type="submit">Calcular</button>
+        </form>
+
+        <div id="error-message" class="error" role="alert" aria-live="polite" hidden></div>
+      </section>
+
+      <section class="panel" aria-labelledby="results-title">
+        <h2 id="results-title">Distribuciones calculadas</h2>
+        <div class="table-scroll">
+          <table id="results-table">
+            <thead id="results-head">
+              <tr>
+                <th scope="col">Estado</th>
+                <th scope="col">P(1)</th>
+                <th scope="col">P(3)</th>
+                <th scope="col">P(5)</th>
+                <th scope="col">P(10)</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+              <tr><td colspan="5">Aún no hay resultados. Pulse Calcular.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="charts" aria-label="Gráficas de la simulación">
+        <article class="panel chart-card">
+          <h2>Distribución por horizonte</h2>
+          <canvas id="chart-bars"></canvas>
+        </article>
+        <article class="panel chart-card">
+          <h2>Evolución de 0 a 10 pasos</h2>
+          <canvas id="chart-lines"></canvas>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
