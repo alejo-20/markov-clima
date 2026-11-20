@@ -2,15 +2,15 @@
 
 ## 1. Entorno y estructura
 
-- [ ] 1.1 Crear requirements.txt con FastAPI, Uvicorn, NumPy, pytest, httpx y pytest-cov; crear y activar el entorno virtual `venv` e instalar dependencias
-- [ ] 1.2 Crear la estructura `app/`, `app/static/` y `tests/` respetando el .gitignore
+- [x] 1.1 Crear requirements.txt con FastAPI, Uvicorn, NumPy, pytest, httpx y pytest-cov; crear y activar el entorno virtual `venv` e instalar dependencias
+- [x] 1.2 Crear la estructura `app/`, `app/static/` y `tests/` respetando el .gitignore
 
 ## 2. Motor de Markov (ME-01 a ME-05)
 
-- [ ] 2.1 Implementar en `app/markov.py` la validación de estados y matriz con tolerancia 1e-9 (ME-01)
-- [ ] 2.2 Implementar el cálculo de P^n, incluyendo P^0 = I y P^1 = P (ME-02)
-- [ ] 2.3 Implementar distribuciones desde estado inicial y desde vector inicial para varios pasos (ME-03, ME-04)
-- [ ] 2.4 Implementar la distribución estacionaria y la comprobación π·P = π (ME-05)
+- [x] 2.1 Implementar en `app/markov.py` la validación de estados y matriz con tolerancia 1e-9 (ME-01)
+- [x] 2.2 Implementar el cálculo de P^n, incluyendo P^0 = I y P^1 = P (ME-02)
+- [x] 2.3 Implementar distribuciones desde estado inicial y desde vector inicial para varios pasos (ME-03, ME-04)
+- [x] 2.4 Implementar la distribución estacionaria y la comprobación π·P = π (ME-05)
 
 ## 3. API (API-01 a API-03)
 
