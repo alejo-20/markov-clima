@@ -176,3 +176,29 @@ def evolution(
         values[step] = current
         current = current @ validated
     return values
+
+
+def stationary_distribution(
+    matrix: MatrixLike,
+    steps: int = STATIONARY_STEPS,
+    states: Sequence[str] | None = None,
+) -> np.ndarray:
+    validated = validate_matrix(matrix, states)
+    count = _validate_step_count(steps)
+    if count == 0:
+        raise ValueError("El cálculo estacionario requiere al menos un paso.")
+
+    power = np.linalg.matrix_power(validated, count)
+    candidate = np.full(validated.shape[0], 1.0 / validated.shape[0]) @ power
+    total = candidate.sum()
+    if not np.isfinite(total) or total <= 0.0:
+        raise ValueError("No se pudo obtener una distribución estacionaria válida.")
+
+    candidate = np.maximum(candidate / total, 0.0)
+    candidate /= candidate.sum()
+    residual = float(np.max(np.abs(candidate @ validated - candidate)))
+    if residual > TOLERANCE:
+        raise ValueError(
+            f"La matriz no convergió a una distribución estacionaria (residuo {residual:.3e})."
+        )
+    return candidate
