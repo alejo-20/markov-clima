@@ -183,3 +183,73 @@ def test_ME_05_S2_coincidencia_con_potencia_elevada():
     from_initial = distribution([0.1, 0.2, 0.3, 0.4], 1000, matrix)
 
     assert np.allclose(stationary, from_initial, atol=1e-9)
+
+
+def test_ME_01_S2_matriz_no_numerica_rechazada():
+    with pytest.raises(ValueError, match="números"):
+        validate_matrix([["x", 0, 0], [0, 1, 0], [0, 0, 1]])
+
+
+def test_ME_01_S2_matriz_unidimensional_rechazada():
+    with pytest.raises(ValueError, match="bidimensional"):
+        validate_matrix([1.0, 0.0, 0.0])
+
+
+def test_ME_01_S5_filas_insuficientes_sin_estados_rechazadas():
+    with pytest.raises(ValueError, match="al menos 3"):
+        validate_matrix([[0.5, 0.5], [0.5, 0.5]])
+
+
+def test_ME_01_S5_longitud_de_estados_distinta_rechazada():
+    with pytest.raises(ValueError, match="no coincide"):
+        validate_matrix(DEFAULT_MATRIX, ["A", "B", "C"])
+
+
+def test_ME_01_S4_valores_no_finitos_rechazados():
+    matrix = [list(row) for row in DEFAULT_MATRIX]
+    matrix[0][0] = float("nan")
+
+    with pytest.raises(ValueError, match="no finitos"):
+        validate_matrix(matrix, DEFAULT_STATES)
+
+
+def test_ME_02_S4_pasos_no_enteros_y_excesivos_rechazados():
+    with pytest.raises(ValueError, match="enteros"):
+        matrix_power(DEFAULT_MATRIX, 1.5)
+    with pytest.raises(ValueError, match="no puede superar"):
+        matrix_power(DEFAULT_MATRIX, 10_001)
+
+
+def test_ME_04_S2_vector_no_numerico_rechazado():
+    with pytest.raises(ValueError, match="números"):
+        distribution(["x", 0, 0, 0], 1, DEFAULT_MATRIX, DEFAULT_STATES)
+
+
+def test_ME_04_S2_vector_bidimensional_rechazado():
+    with pytest.raises(ValueError, match="unidimensional"):
+        distribution([[0.25] * 4], 1, DEFAULT_MATRIX, DEFAULT_STATES)
+
+
+def test_ME_04_S2_vector_no_finito_rechazado():
+    with pytest.raises(ValueError, match="no finitos"):
+        distribution([float("nan"), 0.0, 0.0, 1.0], 1, DEFAULT_MATRIX, DEFAULT_STATES)
+
+
+def test_ME_04_S2_longitud_distinta_a_la_matriz_rechazada():
+    with pytest.raises(ValueError, match="debe tener 4 elementos"):
+        distribution([1 / 3, 1 / 3, 1 / 3], 1, DEFAULT_MATRIX)
+
+
+def test_ME_03_S2_estado_requiere_lista_de_estados():
+    with pytest.raises(ValueError, match="Se requiere la lista"):
+        distribution("Soleado", 1, DEFAULT_MATRIX)
+
+
+def test_ME_03_S3_lista_de_pasos_vacia_rechazada():
+    with pytest.raises(ValueError, match="no puede estar vacía"):
+        distributions_for_steps("Soleado", [], DEFAULT_MATRIX, DEFAULT_STATES)
+
+
+def test_ME_05_S1_pasos_cero_rechazado_en_estacionaria():
+    with pytest.raises(ValueError, match="al menos un paso"):
+        stationary_distribution(DEFAULT_MATRIX, steps=0)

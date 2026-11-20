@@ -164,3 +164,13 @@ def test_API_03_S5_sin_entrada_inicial_devuelve_422():
 
     assert response.status_code == 422
     assert "Debe proporcionar" in response.json()["detail"]
+
+
+def test_API_03_S2_max_evolution_step_invalido_devuelve_422():
+    response = client.post(
+        "/api/predict",
+        json={"initial_state": "Soleado", "steps": [1], "max_evolution_step": -1},
+    )
+
+    assert response.status_code == 422
+    assert "max_evolution_step" in response.json()["detail"]

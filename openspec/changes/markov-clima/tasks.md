@@ -29,7 +29,7 @@
 
 - [x] 5.1 Crear `tests/test_markov.py` con pruebas nombradas por requisito/escenario: matrices válidas e inválidas, P^0, P^1, suma 1, caso de 3 estados calculado a mano, vector inicial y estacionaria (ME-01 a ME-05)
 - [x] 5.2 Crear `tests/test_api.py` con pruebas nombradas por requisito/escenario para éxito y errores 422 de todos los escenarios API (API-01 a API-03)
-- [ ] 5.3 Añadir una prueba por cada Scenario de UI-01 a UI-03 que verifique el HTML/JS/CSS entregado y ejecutar `pytest -v --cov=app`, reportando la cobertura
+- [x] 5.3 Añadir una prueba por cada Scenario de UI-01 a UI-03 que verifique el HTML/JS/CSS entregado y ejecutar `pytest -v --cov=app`, reportando la cobertura
 
 ## 6. Cierre y evidencia
 
