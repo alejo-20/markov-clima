@@ -98,3 +98,11 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
         messages.append(f"{location}: {message}" if location else message)
     detail = "Datos de petición inválidos. " + "; ".join(messages)
     return JSONResponse(status_code=422, content={"detail": detail})
+
+
+@app.get("/api/model", response_model=ModelResponse)
+def get_model() -> ModelResponse:
+    return ModelResponse(
+        states=list(DEFAULT_STATES),
+        matrix=[list(row) for row in DEFAULT_MATRIX],
+    )

@@ -15,7 +15,7 @@
 ## 3. API (API-01 a API-03)
 
 - [x] 3.1 Definir modelos Pydantic, constantes del modelo por defecto y manejo de errores 422 (API-03)
-- [ ] 3.2 Implementar GET /api/model (API-01)
+- [x] 3.2 Implementar GET /api/model (API-01)
 - [ ] 3.3 Implementar POST /api/predict con estado o vector, pasos y matriz opcional (API-02)
 - [ ] 3.4 Montar los archivos estáticos y el endpoint raíz que sirve la UI
 
