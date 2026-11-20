@@ -63,3 +63,19 @@ def validate_matrix(matrix: MatrixLike, states: Sequence[str] | None = None) -> 
             )
 
     return result
+
+
+def _validate_step_count(steps: int) -> int:
+    if isinstance(steps, bool) or not isinstance(steps, int):
+        raise ValueError("Los pasos deben ser enteros no negativos.")
+    if steps < 0:
+        raise ValueError(f"Los pasos deben ser no negativos; recibió {steps}.")
+    if steps > MAX_STEPS:
+        raise ValueError(f"El número de pasos no puede superar {MAX_STEPS}; recibió {steps}.")
+    return steps
+
+
+def matrix_power(matrix: MatrixLike, steps: int) -> np.ndarray:
+    validated = validate_matrix(matrix)
+    count = _validate_step_count(steps)
+    return np.linalg.matrix_power(validated, count)
