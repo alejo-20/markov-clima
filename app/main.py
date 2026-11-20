@@ -11,7 +11,6 @@ from app.markov import (
     DEFAULT_MATRIX,
     DEFAULT_STATES,
     MAX_STEPS,
-    distribution,
     distributions_for_steps,
     evolution,
     stationary_distribution,
@@ -106,3 +105,49 @@ def get_model() -> ModelResponse:
         states=list(DEFAULT_STATES),
         matrix=[list(row) for row in DEFAULT_MATRIX],
     )
+
+
+@app.post("/api/predict", response_model=PredictResponse)
+def predict(payload: PredictRequest) -> PredictResponse:
+    try:
+        states = validate_states(payload.states) if payload.states is not None else list(DEFAULT_STATES)
+        matrix = validate_matrix(
+            payload.matrix if payload.matrix is not None else DEFAULT_MATRIX,
+            states,
+        )
+        initial = (
+            payload.initial_state.strip()
+            if payload.initial_state is not None
+            else payload.initial_vector
+        )
+        distributions = distributions_for_steps(initial, payload.steps, matrix, states)
+
+        evolution_values: dict[str, list[float]] | None = None
+        if payload.include_evolution:
+            values = evolution(initial, payload.max_evolution_step, matrix, states)
+            evolution_values = {
+                states[index]: [float(value) for value in values[:, index]]
+                for index in range(len(states))
+            }
+
+        stationary_values: list[float] | None = None
+        if payload.include_stationary:
+            stationary_values = [
+                float(value) for value in stationary_distribution(matrix, states=states)
+            ]
+
+        return PredictResponse(
+            states=states,
+            matrix=matrix.tolist(),
+            steps=list(payload.steps),
+            initial_state=payload.initial_state,
+            initial_vector=payload.initial_vector,
+            distributions={
+                str(step): [float(value) for value in vector]
+                for step, vector in distributions.items()
+            },
+            evolution=evolution_values,
+            stationary=stationary_values,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
