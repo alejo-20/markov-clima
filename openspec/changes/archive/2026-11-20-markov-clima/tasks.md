@@ -35,5 +35,5 @@
 
 - [ ] 6.1 Crear README.md con problema, fundamento matemático, matriz y estados, instalación, ejecución, pruebas, estructura, flujo SDD/OpenSpec y uso de opencode
 - [x] 6.2 Verificar el arranque con `uvicorn app.main:app --reload` y comprobar que las gráficas se renderizan
-- [ ] 6.3 Ejecutar `openspec archive markov-clima` y verificar que los requisitos pasan a `openspec/specs/`
+- [x] 6.3 Ejecutar `openspec archive markov-clima` y verificar que los requisitos pasan a `openspec/specs/`
 - [ ] 6.4 Hacer push final a GitHub y entregar URL y checklist de cumplimiento
